@@ -1,0 +1,28 @@
+{
+  "name": "projet-cours-auth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lychar85/Projet-cours-auth.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lychar85/Projet-cours-auth/issues"
+  },
+  "homepage": "https://github.com/Lychar85/Projet-cours-auth#readme",
+  "dependencies": {
+    "@handlebars/allow-prototype-access": "^1.0.3",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.2.0",
+    "handlebars": "^4.7.6",
+    "mongoose": "^5.11.12",
+    "multer": "^1.4.2",
+    "path": "^0.12.7"
+  }
+}
