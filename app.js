@@ -1,62 +1,58 @@
 const
     port = 4000
 express = require('express'),
+    
     mongoose = require("mongoose"),
     bodyParser = require('body-parser'),
-    moment = require('moment'),
-    app = express();
+    exphbs = require("express-handlebars"),
+    Handlebars = require("handlebars"),
+    fileupload = require('express-fileupload')
 
-    const exphbs = require("express-handlebars");
-    const Handlebars = require("handlebars");
-    const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
-    var MomentHandler = require("handlebars.moment");
-    MomentHandler.registerHelpers(Handlebars);
+//controllers
+const articleCreateController = require('./controllers/createArticles'),
+    homePageController = require('./controllers/home'),
+    articleOneController = require('./controllers/articleOne'),
+    articlePostController = require('./controllers/articlePost')
 
+
+app = express();
+
+
+//middleware
+const articleValidPost = require('./middleware/articleValidPost')
+app.use('/article/post', articleValidPost)
 
 //app use-------------------------------------------------------------------------------------------------------------------------------------------------
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/public"))
 app.use(bodyParser.json())
+app.use(fileupload())
 app.use(bodyParser.urlencoded({
     extended: true
 }))
- 
+
 //VIEWS---------------------------------------------------------------------------------------------------------------------------------------------------
-//date--------------------------------------------
-
-
-
 // Handlebars--------------------------------------------
-/*exphbs = require("express-handlebars"),
-    {
-        allowInsecurePrototypeAccess
-    } = require('@handlebars/allow-prototype-access');
-
+exphbs = require("express-handlebars"), {
+    allowInsecurePrototypeAccess
+} = require('@handlebars/allow-prototype-access');
 app.engine('hbs', exphbs({
     defaultLayout: 'main',
     extname: 'hbs',
     handlebars: allowInsecurePrototypeAccess(Handlebars)
 }));
-app.set('view engine', 'hbs')*/
-
-// Handlebars
-app.engine('hbs', exphbs({defaultLayout: 'main', extname: 'hbs', handlebars: allowInsecurePrototypeAccess(Handlebars)}));
-
 app.set('view engine', 'hbs')
+
 //connect mongoose---------------------------------------
 require('./config/db')
 
+const fileUpload = require('express-fileupload');
+const articleOne = require('./controllers/articleOne');
 //models-------------------------------------------------
-const post = require('./models/article')
+
 
 //route---------------------------------------------------------------------------------------------------------------------------------------------------
 //index--------------------------------------------------
-app.get('/', async (req, res) => {
-    const posts = await post.find({})
-    console.log(posts);
-    res.render('index', {
-        posts
-    })
-});
+app.get('/', homePageController);
 
 //contact------------------------------------------------
 app.get('/contact', (req, res) => {
@@ -64,25 +60,11 @@ app.get('/contact', (req, res) => {
 });
 
 //Ajout article------------------------------------------
-app.get('/articles/add', (req, res) => {
-        res.render('articles/add')
-    })
-    .post('/article/post', (req, res) => {
-        post.create(req.body, (err, docs) => {
-            res.redirect('/')
-        })
-
-        console.log(req.body)
-    });
+app.get('/article/add', articleCreateController)
+    .post('/article/post',articlePostController,);
 
 //ArticleOne---------------------------------------------
-app.get('/articles/:id', async (req, res) => {
-    const article = await post.findById(req.params.id)
-    console.log(req.params);
-    res.render('articles', {
-        article
-    })
-})
+app.get('/articles/:id',articleOneController )
 
 
 

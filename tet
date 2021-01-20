@@ -1,0 +1,19 @@
+//date--------------------------------------------
+// Handlebars--------------------------------------------
+/*exphbs = require("express-handlebars"),
+    {
+        allowInsecurePrototypeAccess
+    } = require('@handlebars/allow-prototype-access');
+app.engine('hbs', exphbs({
+    defaultLayout: 'main',
+    extname: 'hbs',
+    handlebars: allowInsecurePrototypeAccess(Handlebars)
+}));
+app.set('view engine', 'hbs')*/
+/*Handlebars.registerHelper('formatDate', function(dateString) {
+    return new Handlebars.SafeString(
+        moment(dateString).format("DD-MM-YY").toUpperCase()
+    );
+});
+// Handlebars
+app.engine('hbs', exphbs({defaultLayout: 'main', extname: 'hbs', handlebars: allowInsecurePrototypeAccess(Handlebars)}));
