@@ -3,7 +3,15 @@ const
 express = require('express'),
     mongoose = require("mongoose"),
     bodyParser = require('body-parser'),
+    moment = require('moment'),
     app = express();
+
+    const exphbs = require("express-handlebars");
+    const Handlebars = require("handlebars");
+    const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
+    var MomentHandler = require("handlebars.moment");
+    MomentHandler.registerHelpers(Handlebars);
+
 
 //app use-------------------------------------------------------------------------------------------------------------------------------------------------
 app.use(express.static(__dirname + "/public"));
@@ -14,12 +22,11 @@ app.use(bodyParser.urlencoded({
  
 //VIEWS---------------------------------------------------------------------------------------------------------------------------------------------------
 //date--------------------------------------------
-var Handlebars = require("handlebars");
-var MomentHandler = require("handlebars.moment");
-MomentHandler.registerHelpers(Handlebars);
+
+
 
 // Handlebars--------------------------------------------
-exphbs = require("express-handlebars"),
+/*exphbs = require("express-handlebars"),
     {
         allowInsecurePrototypeAccess
     } = require('@handlebars/allow-prototype-access');
@@ -29,8 +36,12 @@ app.engine('hbs', exphbs({
     extname: 'hbs',
     handlebars: allowInsecurePrototypeAccess(Handlebars)
 }));
-app.set('view engine', 'hbs')
+app.set('view engine', 'hbs')*/
 
+// Handlebars
+app.engine('hbs', exphbs({defaultLayout: 'main', extname: 'hbs', handlebars: allowInsecurePrototypeAccess(Handlebars)}));
+
+app.set('view engine', 'hbs')
 //connect mongoose---------------------------------------
 require('./config/db')
 
@@ -41,6 +52,7 @@ const post = require('./models/article')
 //index--------------------------------------------------
 app.get('/', async (req, res) => {
     const posts = await post.find({})
+    console.log(posts);
     res.render('index', {
         posts
     })
