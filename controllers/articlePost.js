@@ -2,6 +2,7 @@ path = require('path')
 const post = require('../models/article');
 
 module.exports =  (req, res) => {
+    console.log(req);
     const {
         image
     } = req.files

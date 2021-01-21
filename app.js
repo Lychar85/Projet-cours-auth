@@ -18,7 +18,8 @@ const articleCreateController = require('./controllers/createArticles'),
     userCreateController = require('./controllers/UserCreate'),
     userLoginController = require('./controllers/UserLogin'),
     userconnectController = require('./controllers/Userconnect'),
-    userAuthController = require('./controllers/userAuth')
+    userAuthController = require('./controllers/userAuth'),
+    userDeconnectController = require('./controllers/userDeconnect')
 app = express();
 
 //connect mongoose---------------------------------------
@@ -28,7 +29,7 @@ require('./config/db')
 
 
 //app use-------------------------------------------------------------------------------------------------------------------------------------------------
-app.use(express.static(__dirname + "/public"))
+
 
 //save cookies---------------------------------------
 const mongoStore = MongoStore(expressSession)
@@ -42,14 +43,13 @@ app.use(expressSession({
     })
 }))
 //----------------------------------------------------
-app.use('*',(req,res,next) =>{
+app.use('*', (req, res, next) => {
     res.locals.user = req.session.userId;
-    console.log(res.locals.user);
     next()
 })
 
 app.use(fileupload())
-
+app.use(express.static(__dirname + "/public"))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
     extended: true
@@ -106,9 +106,19 @@ app.get('/articles/:id', articleOneController)
 app.get('/user/create', redirectAuthsucess, userCreateController)
     .post('/user/login', redirectAuthsucess, userLoginController)
 
+    .get('/user/deconnect', userDeconnectController)
 //connexion----------------------------------------------
 app.get('/user/connect', redirectAuthsucess, userconnectController)
     .post('/user/connectAuth', redirectAuthsucess, userAuthController)
+
+
+
+
+
+app.use((req, res) => {
+    res.render('err404')
+})
+
 
 //ouvre le port---------------------------------------------------------------------------------------------------------------------------------------------------
 app.listen(port, () => {
