@@ -28,6 +28,12 @@ require('./config/db')
 
 
 
+app.use(bodyParser.urlencoded({
+    extended: true
+}))
+app.use(bodyParser.json())
+app.use(fileupload())
+
 //app use-------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -43,21 +49,15 @@ app.use(expressSession({
     })
 }))
 //----------------------------------------------------
-app.use('*', (req, res, next) => {
-    res.locals.user = req.session.userId;
-    next()
-})
 
-app.use(fileupload())
-app.use(express.static(__dirname + "/public"))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
-    extended: true
-}))
+
+
+
+
 
 //affiche message d'erreur----------------------------
 app.use(flash())
-
+app.use(express.static(__dirname + "/public"))
 
 /*
 // Moment (Handlebars)
@@ -76,6 +76,10 @@ app.engine('hbs', exphbs({
 }));
 app.set('view engine', 'hbs')
 
+app.use('*', (req, res, next) => {
+    res.locals.user = req.session.userId;
+    next()
+})
 //middleware
 
 const articleValidPost = require('./middleware/articleValidPost')
@@ -97,7 +101,7 @@ app.get('/contact', (req, res) => {
 
 //Ajout article------------------------------------------
 app.get('/article/add', auth, articleCreateController)
-    .post('/article/post', auth, articleValidPost, articlePostController, );
+    .post('/article/post', auth, articleValidPost, articlePostController);
 
 //ArticleOne---------------------------------------------
 app.get('/articles/:id', articleOneController)

@@ -2,10 +2,8 @@ path = require('path')
 const post = require('../models/article');
 
 module.exports =  (req, res) => {
-    console.log(req);
-    const {
-        image
-    } = req.files
+    console.log(req.files);
+    const {image} = req.file
     const uploadfile = path.resolve(__dirname, '..', 'public/upload', image.name)
 
     image.mv(uploadfile, (err) => {

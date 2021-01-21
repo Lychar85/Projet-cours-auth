@@ -1,7 +1,7 @@
 const user = require('../models/user')
 
 module.exports = (req,res,next) =>{
-    //connecton base de donnée
+    //connexion base de donnée
     user.findById(req.session.userId, (err,user) =>{
 
         if(err || !user) {
