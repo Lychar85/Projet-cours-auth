@@ -1,19 +1,28 @@
 <section class="section">
-
     <div class="container is-fullhd">
+
+        
+        <div class="content">
+            <ol type="1">
+                {{#each errors}}
+                <li>{{this}}</li>
+                {{/each}}
+            </ol>
+        </div>
+        
 
         <form action="/user/login" method="POST" enctype="multipart/form-data">
             <div class="field">
                 <label class="label">Name</label>
                 <div class="control">
-                    <input class="input" type="text" name="name" placeholder="e.g Alex Smith">
+                    <input class="input" type="text" name="name" placeholder="e.g Alex Smith" value={{data.name}}>
                 </div>
             </div>
 
             <div class="field">
                 <label class="label">Email</label>
                 <div class="control">
-                    <input class="input" type="email" name="email" placeholder="e.g. alexsmith@gmail.com">
+                    <input class="input" type="email" name="email" placeholder="e.g. alexsmith@gmail.com" value={{data.email}}>
                 </div>
             </div>
 

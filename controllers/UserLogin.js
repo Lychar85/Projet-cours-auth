@@ -7,7 +7,10 @@ module.exports = (req,res) =>{
 
             if(err) {
               const loginError =  Object.keys(err.errors).map(keys => err.errors[keys].message)
-              req.session.loginError = loginError
+
+                req.flash('loginError', loginError)
+                req.flash('data', req.body)
+
               return  res.redirect('/user/create')
             }
 

@@ -7,7 +7,8 @@ express = require('express'),
     Handlebars = require("handlebars"),
     fileupload = require('express-fileupload'),
     expressSession = require('express-session'),
-    MongoStore = require('connect-mongo');
+    MongoStore = require('connect-mongo'),
+    flash = require('connect-flash');
 
 //controllers
 const articleCreateController = require('./controllers/createArticles'),
@@ -25,28 +26,37 @@ require('./config/db')
 
 
 
-app.use(express.static(__dirname + "/public"))
+
 //app use-------------------------------------------------------------------------------------------------------------------------------------------------
+app.use(express.static(__dirname + "/public"))
 
-
+//save cookies---------------------------------------
 const mongoStore = MongoStore(expressSession)
 app.use(expressSession({
     secret: 'securite',
     name: 'biscuit',
     saveUninitialized: true,
     resave: false,
-
-    store: new mongoStore (
-        {mongooseConnection: mongoose.connection}
-    )
+    store: new mongoStore({
+        mongooseConnection: mongoose.connection
+    })
 }))
+//----------------------------------------------------
+app.use('*',(req,res,next) =>{
+    res.locals.user = req.session.userId;
+    console.log(res.locals.user);
+    next()
+})
+
+app.use(fileupload())
 
 app.use(bodyParser.json())
-app.use(fileupload())
 app.use(bodyParser.urlencoded({
     extended: true
 }))
 
+//affiche message d'erreur----------------------------
+app.use(flash())
 
 
 /*
@@ -72,7 +82,9 @@ const articleValidPost = require('./middleware/articleValidPost')
 app.use('/article/post', articleValidPost)
 
 const auth = require('./middleware/auth')
-app.use('/article/add',auth)
+app.use('/article/add', auth)
+
+const redirectAuthsucess = require('./middleware/redirectAuthsucess')
 
 //route---------------------------------------------------------------------------------------------------------------------------------------------------
 //index--------------------------------------------------
@@ -85,18 +97,18 @@ app.get('/contact', (req, res) => {
 
 //Ajout article------------------------------------------
 app.get('/article/add', auth, articleCreateController)
-    .post('/article/post',auth, articleValidPost, articlePostController, );
+    .post('/article/post', auth, articleValidPost, articlePostController, );
 
 //ArticleOne---------------------------------------------
 app.get('/articles/:id', articleOneController)
 
-//User---------------------------------------------------
-app.get('/user/create', userCreateController)
-    .post('/user/login', userLoginController)
+//User---------------------------------------------------------------------------------------------------------
+app.get('/user/create', redirectAuthsucess, userCreateController)
+    .post('/user/login', redirectAuthsucess, userLoginController)
 
 //connexion----------------------------------------------
-app.get('/user/connect', userconnectController)
-.post('/user/connectAuth', userAuthController)
+app.get('/user/connect', redirectAuthsucess, userconnectController)
+    .post('/user/connectAuth', redirectAuthsucess, userAuthController)
 
 //ouvre le port---------------------------------------------------------------------------------------------------------------------------------------------------
 app.listen(port, () => {
