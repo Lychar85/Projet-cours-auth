@@ -1,3 +1,11 @@
 module.exports = (req, res) =>{
-        res.render('article/add')
+        if(req.session.userId){
+
+        return res.render('article/add')
+
+        }else {
+             return res.redirect('/user/connect')
+        }
+
+
 }
