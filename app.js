@@ -19,15 +19,10 @@ const articleCreateController = require('./controllers/createArticles'),
     userLoginController = require('./controllers/UserLogin'),
     userconnectController = require('./controllers/Userconnect'),
     userAuthController = require('./controllers/userAuth'),
-    userDeconnectController = require('./controllers/userDeconnect')
+    userDeconnectController = require('./controllers/userDeconnect');
 app = express();
 
 //connect mongoose---------------------------------------
-require('./config/db')
-
-
-
-
 app.use(bodyParser.urlencoded({
     extended: true
 }))
@@ -35,8 +30,6 @@ app.use(bodyParser.json())
 app.use(fileupload())
 
 //app use-------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 //save cookies---------------------------------------
 const mongoStore = MongoStore(expressSession)
 app.use(expressSession({
@@ -48,21 +41,13 @@ app.use(expressSession({
         mongooseConnection: mongoose.connection
     })
 }))
-//----------------------------------------------------
-
-
-
-
 
 
 //affiche message d'erreur----------------------------
 app.use(flash())
-app.use(express.static(__dirname + "/public"))
 
-/*
-// Moment (Handlebars)
-var MomentHandler = require("handlebars.moment");
-MomentHandler.registerHelpers(Handlebars);*/
+
+app.use(express.static(__dirname + "/public"))
 
 //VIEWS---------------------------------------------------------------------------------------------------------------------------------------------------
 // Handlebars--------------------------------------------
@@ -75,7 +60,7 @@ app.engine('hbs', exphbs({
     handlebars: allowInsecurePrototypeAccess(Handlebars)
 }));
 app.set('view engine', 'hbs')
-
+require('./config/db')
 app.use('*', (req, res, next) => {
     res.locals.user = req.session.userId;
     next()
@@ -101,7 +86,7 @@ app.get('/contact', (req, res) => {
 
 //Ajout article------------------------------------------
 app.get('/article/add', auth, articleCreateController)
-    .post('/article/post', auth, articleValidPost, articlePostController);
+    .post('/article/post', auth, articleValidPost, articlePostController)
 
 //ArticleOne---------------------------------------------
 app.get('/articles/:id', articleOneController)

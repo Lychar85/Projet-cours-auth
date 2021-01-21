@@ -3,7 +3,7 @@ const post = require('../models/article');
 
 module.exports =  (req, res) => {
     console.log(req.files);
-    const {image} = req.file
+    const { image } = req.files
     const uploadfile = path.resolve(__dirname, '..', 'public/upload', image.name)
 
     image.mv(uploadfile, (err) => {
