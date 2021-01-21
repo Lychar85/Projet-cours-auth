@@ -86,7 +86,7 @@ app.get('/contact', (req, res) => {
 
 //Ajout article------------------------------------------
 app.get('/article/add', auth, articleCreateController)
-    .post('/article/post', auth, articleValidPost, articlePostController)
+    .post('/article/post', auth, articlePostController)
 
 //ArticleOne---------------------------------------------
 app.get('/articles/:id', articleOneController)
