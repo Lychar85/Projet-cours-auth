@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+/*const mongoose = require("mongoose");
 
 
 const db = require('./keys').mongoURI
@@ -13,4 +13,4 @@ mongoose.connect(
         if (!err) console.log("MongoDB connect");
         else console.log("connect error:" + err);
     }
-);
+);*/
