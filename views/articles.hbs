@@ -1,7 +1,8 @@
 <section class="section">
     <div class="container">
+        <img src="{{article.image}}" alt="">
         <h1 class="title">{{article.title}}</h1>
-        <p> {{article.content}} </p>
+        <p> {{stripTags article.content}} </p>
         
     </div>
 </section>

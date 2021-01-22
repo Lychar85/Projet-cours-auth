@@ -44,7 +44,8 @@
           <div class="card-content">
             <div class="content">
               <a href="/articles/{{_id}}"><h2>{{title}}</h2></a> 
-              <p>{{content}}</p>
+              <p>{{stripTags content}}</p>
+              <p>{{moment article.createDate date format="dddd, DD MMMM YYYY HH:mm:ss"}}</p>
             </div>
           </div>
         </div>

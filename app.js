@@ -1,25 +1,28 @@
 const
-    port = 4000
-express = require('express'),
+    port = 4000,
+    express = require('express'),
     mongoose = require("mongoose"),
     bodyParser = require('body-parser'),
-    exphbs = require("express-handlebars"),
-    Handlebars = require("handlebars"),
     fileupload = require('express-fileupload'),
     expressSession = require('express-session'),
-    MongoStore = require('connect-mongo'),
-    flash = require('connect-flash');
+    MongoStore = require('connect-mongo');
+    
+
+flash = require('connect-flash');
 
 //controllers
 const articleCreateController = require('./controllers/createArticles'),
     homePageController = require('./controllers/home'),
     articleOneController = require('./controllers/articleOne'),
     articlePostController = require('./controllers/articlePost'),
+
     userCreateController = require('./controllers/UserCreate'),
     userLoginController = require('./controllers/UserLogin'),
-    userconnectController = require('./controllers/Userconnect'),
     userAuthController = require('./controllers/userAuth'),
+    
+    userconnectController = require('./controllers/Userconnect'),
     userDeconnectController = require('./controllers/userDeconnect');
+
 app = express();
 
 //connect mongoose---------------------------------------
@@ -50,21 +53,36 @@ app.use(flash())
 app.use(express.static(__dirname + "/public"))
 
 //VIEWS---------------------------------------------------------------------------------------------------------------------------------------------------
+function stripTags(input) {
+    return input.replace(/<(?:.|\n)*?>/gm, '')
+}
+
 // Handlebars--------------------------------------------
-exphbs = require("express-handlebars"), {
-    allowInsecurePrototypeAccess
-} = require('@handlebars/allow-prototype-access');
+const Handlebars = require("handlebars"),
+    MomentHandler = require("handlebars.moment");
+MomentHandler.registerHelpers(Handlebars);
+
+exphbs = require("express-handlebars"),
+
 app.engine('hbs', exphbs({
+    helpers: {
+        stripTags: stripTags
+    },
     defaultLayout: 'main',
-    extname: 'hbs',
-    handlebars: allowInsecurePrototypeAccess(Handlebars)
+    extname: 'hbs'
 }));
+
 app.set('view engine', 'hbs')
 require('./config/db')
 app.use('*', (req, res, next) => {
     res.locals.user = req.session.userId;
     next()
 })
+
+
+
+
+
 //middleware
 
 const articleValidPost = require('./middleware/articleValidPost')

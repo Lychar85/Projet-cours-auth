@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
 
+
+const db = require('./keys').mongoURI
+
 //CONNEXION A MONGODB--------------------------------------------
 mongoose.connect(
-    "mongodb://localhost:27017/auth", {
+    db, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     },
