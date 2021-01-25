@@ -1,7 +1,6 @@
 const
     port = 4000,
     express = require('express'),
-    mongoose = require("mongoose"),
     bodyParser = require('body-parser'),
     fileupload = require('express-fileupload'),
     expressSession = require('express-session'),
