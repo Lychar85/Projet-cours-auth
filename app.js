@@ -25,10 +25,7 @@ const articleCreateController = require('./controllers/createArticles'),
 app = express();
 
 //connect mongoose---------------------------------------
-app.use(bodyParser.urlencoded({
-    extended: true
-}))
-app.use(bodyParser.json())
+
 app.use(fileupload())
 
 //app use-------------------------------------------------------------------------------------------------------------------------------------------------
