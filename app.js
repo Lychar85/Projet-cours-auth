@@ -31,6 +31,7 @@ app.use(fileupload())
 //app use-------------------------------------------------------------------------------------------------------------------------------------------------
 //save cookies---------------------------------------
 const mongoStore = MongoStore(expressSession)
+const mongoose = require('mongoose')
 app.use(expressSession({
     secret: 'securite',
     name: 'biscuit',
